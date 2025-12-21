@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function RedirectPage() {
   const params = useParams();
@@ -82,20 +83,24 @@ export default function RedirectPage() {
               href="https://apps.apple.com/app/YOUR_APP_ID"
               className="transition-transform hover:scale-105"
             >
-              <img
+              <Image
                 src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us"
                 alt="Download on App Store"
-                className="h-10 mx-auto"
+                width={120}
+                height={40}
+                className="mx-auto"
               />
             </a>
             <a
               href="https://play.google.com/store/apps/details?id=com.anonymous.wishlistapp"
               className="transition-transform hover:scale-105"
             >
-              <img
+              <Image
                 src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
                 alt="Get it on Google Play"
-                className="h-[48px] -my-1 mx-auto"
+                width={155}
+                height={48}
+                className="-my-1 mx-auto"
               />
             </a>
           </div>
