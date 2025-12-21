@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/wishlist/:id",
+      "destination": "/redirect/:id"
+    },
+    {
+      "source": "/wishlist/:id/:path*",
+      "destination": "/redirect/:id"
+    }
+  ]
+}
