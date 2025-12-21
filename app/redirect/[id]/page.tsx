@@ -56,13 +56,14 @@ export default function RedirectPage() {
               </span>
             </div>
             <p className="text-gray-600 mb-6">
-              If the app doesn't open automatically, tap the button below.
+              If the app doesn&apos;t open automatically, tap the button below.
             </p>
           </>
         ) : (
           <>
             <p className="text-gray-600 mb-6">
-              The app didn't open. You may need to install Wishlist App first.
+              The app didn&apos;t open. You may need to install Wishlist App
+              first.
             </p>
             <div className="flex flex-col gap-3 mb-6">
               <a
@@ -77,7 +78,7 @@ export default function RedirectPage() {
 
         {/* Download buttons */}
         <div className="border-t pt-6 mt-6">
-          <p className="text-sm text-gray-500 mb-4">Don't have the app?</p>
+          <p className="text-sm text-gray-500 mb-4">Don&apos;t have the app?</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <a
               href="https://apps.apple.com/app/YOUR_APP_ID"
