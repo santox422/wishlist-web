@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
     // Send email notification to support
     await resend.emails.send({
       from: "Wishlist App <onboarding@resend.dev>",
-      to: "wishlists.saas@gmail.com",
+      to: "wishii.help@gmail.com",
       subject: "Account Deletion Request",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">

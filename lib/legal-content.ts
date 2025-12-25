@@ -4,7 +4,7 @@
 export const legalConfig = {
   appName: "Wishlist App",
   ownerName: "Sebastian Seidel",
-  contactEmail: "wishlists.saas@gmail.com",
+  contactEmail: "wishii.help@gmail.com",
   lastUpdated: "December 2024",
   lastUpdatedDE: "Dezember 2024",
   minimumAge: 16,

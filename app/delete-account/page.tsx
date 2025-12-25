@@ -162,7 +162,7 @@ export default function DeleteAccountPage() {
           <p className="text-sm text-[var(--color-warm-gray)]">
             Need help?{" "}
             <a
-              href="mailto:wishlists.saas@gmail.com"
+              href="mailto:wishii.help@gmail.com"
               className="text-[var(--color-charcoal)] hover:text-[var(--color-accent)] transition-colors"
             >
               Contact Support
