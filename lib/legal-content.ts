@@ -2,13 +2,13 @@
 // Used across the app and web pages
 
 export const legalConfig = {
-  appName: "Wishlist App",
+  appName: "Wishii",
   ownerName: "Sebastian Seidel",
   contactEmail: "wishii.help@gmail.com",
   lastUpdated: "December 2024",
   lastUpdatedDE: "Dezember 2024",
   minimumAge: 16,
-  websiteUrl: "https://wishlist-app.com",
+  websiteUrl: "https://wishii.xyz",
 };
 
 export const termsContent = {

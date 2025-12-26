@@ -11,7 +11,7 @@ export default function RedirectPage() {
   const [countdown, setCountdown] = useState(3);
   const [redirectFailed, setRedirectFailed] = useState(false);
 
-  const appScheme = `wishlist-app://wishlist/${id}`;
+  const appScheme = `wishii://wishlist/${id}`;
 
   useEffect(() => {
     // Try to open the app
@@ -62,8 +62,7 @@ export default function RedirectPage() {
         ) : (
           <>
             <p className="text-gray-600 mb-6">
-              The app didn&apos;t open. You may need to install Wishlist App
-              first.
+              The app didn&apos;t open. You may need to install Wishii first.
             </p>
             <div className="flex flex-col gap-3 mb-6">
               <a
@@ -93,7 +92,7 @@ export default function RedirectPage() {
               />
             </a>
             <a
-              href="https://play.google.com/store/apps/details?id=com.anonymous.wishlistapp"
+              href="https://play.google.com/store/apps/details?id=xyz.wishii.app"
               className="transition-transform hover:scale-105"
             >
               <Image
@@ -112,7 +111,7 @@ export default function RedirectPage() {
           href="/"
           className="inline-block mt-6 text-purple-600 hover:text-purple-700 font-medium"
         >
-          ← Back to Wishlist App
+          ← Back to Wishii
         </Link>
       </div>
     </div>
