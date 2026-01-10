@@ -1,11 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
+import { checkRateLimit } from "@/lib/rateLimit";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-
-// In-memory rate limiting store (in production, use Redis or similar)
-// Maps IP/email to { count, resetTime }
-const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
 
 // Rate limiting configuration
 const RATE_LIMIT = {
@@ -14,36 +11,6 @@ const RATE_LIMIT = {
   EMAIL_MAX_REQUESTS: 5, // Max requests per email per time window
   EMAIL_WINDOW_MS: 24 * 60 * 60 * 1000, // 24 hour window for email
 };
-
-function checkRateLimit(
-  key: string,
-  maxRequests: number,
-  windowMs: number,
-): boolean {
-  const now = Date.now();
-  const record = rateLimitStore.get(key);
-
-  // Clean up expired entries
-  if (record && now > record.resetTime) {
-    rateLimitStore.delete(key);
-  }
-
-  const currentRecord = rateLimitStore.get(key);
-
-  if (!currentRecord) {
-    // First request
-    rateLimitStore.set(key, { count: 1, resetTime: now + windowMs });
-    return true;
-  }
-
-  if (currentRecord.count >= maxRequests) {
-    return false; // Rate limit exceeded
-  }
-
-  // Increment count
-  currentRecord.count++;
-  return true;
-}
 
 export async function POST(request: NextRequest) {
   try {
@@ -54,16 +21,15 @@ export async function POST(request: NextRequest) {
       "unknown";
 
     // Check IP-based rate limit first
-    if (
-      !checkRateLimit(
-        `ip:${clientIp}`,
-        RATE_LIMIT.IP_MAX_REQUESTS,
-        RATE_LIMIT.IP_WINDOW_MS,
-      )
-    ) {
+    const ipRateLimitOk = await checkRateLimit(
+      `ip:${clientIp}`,
+      RATE_LIMIT.IP_MAX_REQUESTS,
+      RATE_LIMIT.IP_WINDOW_MS
+    );
+    if (!ipRateLimitOk) {
       return NextResponse.json(
         { error: "Too many requests. Please try again later." },
-        { status: 429 },
+        { status: 429 }
       );
     }
 
@@ -78,26 +44,25 @@ export async function POST(request: NextRequest) {
     if (!emailRegex.test(email)) {
       return NextResponse.json(
         { error: "Invalid email format" },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
     const normalizedEmail = email.toLowerCase().trim();
 
     // Check email-based rate limit
-    if (
-      !checkRateLimit(
-        `email:${normalizedEmail}`,
-        RATE_LIMIT.EMAIL_MAX_REQUESTS,
-        RATE_LIMIT.EMAIL_WINDOW_MS,
-      )
-    ) {
+    const emailRateLimitOk = await checkRateLimit(
+      `email:${normalizedEmail}`,
+      RATE_LIMIT.EMAIL_MAX_REQUESTS,
+      RATE_LIMIT.EMAIL_WINDOW_MS
+    );
+    if (!emailRateLimitOk) {
       return NextResponse.json(
         {
           error:
             "A deletion request for this email has already been submitted recently. Please wait before trying again.",
         },
-        { status: 429 },
+        { status: 429 }
       );
     }
 
@@ -139,7 +104,7 @@ export async function POST(request: NextRequest) {
     console.error("Failed to send deletion request email:", error);
     return NextResponse.json(
       { error: "Failed to process request" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }
