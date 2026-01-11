@@ -20,14 +20,13 @@ async function getKV() {
 
   try {
     // Dynamic import to avoid errors if @vercel/kv is not installed
-    // @ts-ignore - optional dependency
     const kvModule = await import("@vercel/kv");
     return kvModule.kv || kvModule.default || null;
   } catch {
     // KV not available, will use memory store as fallback
     if (process.env.NODE_ENV === "production") {
       console.warn(
-        "[RateLimit] @vercel/kv not available in production. Install @vercel/kv and set KV_REST_API_URL environment variable."
+        "[RateLimit] @vercel/kv not available in production. Install @vercel/kv and set KV_REST_API_URL environment variable.",
       );
     }
     return null;
@@ -41,7 +40,7 @@ async function getKV() {
 export async function checkRateLimit(
   key: string,
   maxRequests: number,
-  windowMs: number
+  windowMs: number,
 ): Promise<boolean> {
   const now = Date.now();
 

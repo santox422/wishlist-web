@@ -24,12 +24,12 @@ export async function POST(request: NextRequest) {
     const ipRateLimitOk = await checkRateLimit(
       `ip:${clientIp}`,
       RATE_LIMIT.IP_MAX_REQUESTS,
-      RATE_LIMIT.IP_WINDOW_MS
+      RATE_LIMIT.IP_WINDOW_MS,
     );
     if (!ipRateLimitOk) {
       return NextResponse.json(
         { error: "Too many requests. Please try again later." },
-        { status: 429 }
+        { status: 429 },
       );
     }
 
@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
     if (!emailRegex.test(email)) {
       return NextResponse.json(
         { error: "Invalid email format" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
     const emailRateLimitOk = await checkRateLimit(
       `email:${normalizedEmail}`,
       RATE_LIMIT.EMAIL_MAX_REQUESTS,
-      RATE_LIMIT.EMAIL_WINDOW_MS
+      RATE_LIMIT.EMAIL_WINDOW_MS,
     );
     if (!emailRateLimitOk) {
       return NextResponse.json(
@@ -62,13 +62,13 @@ export async function POST(request: NextRequest) {
           error:
             "A deletion request for this email has already been submitted recently. Please wait before trying again.",
         },
-        { status: 429 }
+        { status: 429 },
       );
     }
 
     // Send email notification to support
     await resend.emails.send({
-      from: "Wishlist App <onboarding@resend.dev>",
+      from: "Wishlist App <support@mail.wishii.xyz>",
       to: "wishii.help@gmail.com",
       subject: "Account Deletion Request",
       html: `
@@ -99,12 +99,38 @@ export async function POST(request: NextRequest) {
       `,
     });
 
-    return NextResponse.json({ success: true });
+    // Return response with security headers
+    return NextResponse.json(
+      { success: true },
+      {
+        headers: {
+          "Strict-Transport-Security":
+            "max-age=31536000; includeSubDomains; preload",
+          "X-Content-Type-Options": "nosniff",
+          "X-Frame-Options": "DENY",
+          "Referrer-Policy": "strict-origin-when-cross-origin",
+          "X-XSS-Protection": "1; mode=block",
+          "Permissions-Policy":
+            "camera=(), microphone=(), geolocation=(), interest-cohort=()",
+          "Content-Security-Policy":
+            "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https:; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests",
+        },
+      },
+    );
   } catch (error) {
     console.error("Failed to send deletion request email:", error);
     return NextResponse.json(
       { error: "Failed to process request" },
-      { status: 500 }
+      {
+        status: 500,
+        headers: {
+          "Strict-Transport-Security":
+            "max-age=31536000; includeSubDomains; preload",
+          "X-Content-Type-Options": "nosniff",
+          "X-Frame-Options": "DENY",
+          "Referrer-Policy": "strict-origin-when-cross-origin",
+        },
+      },
     );
   }
 }
