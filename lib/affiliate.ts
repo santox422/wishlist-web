@@ -3,9 +3,9 @@
  * Wraps product URLs with affiliate tags for monetization
  */
 
-// Affiliate partner IDs - can be configured via environment variables
-const AMAZON_AFFILIATE_TAG =
-  process.env.NEXT_PUBLIC_AMAZON_AFFILIATE_TAG || "wishii-20";
+// Affiliate partner IDs - must match config.js in the app
+// To change: Update both here and in config.js affiliate.amazonTag
+const AMAZON_AFFILIATE_TAG = "wishii-20";
 
 /**
  * Check if a URL is from Amazon
