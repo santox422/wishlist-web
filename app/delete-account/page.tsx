@@ -39,7 +39,7 @@ export default function DeleteAccountPage() {
       if (response.ok) {
         setStatus("success");
         setMessage(
-          "Your deletion request has been submitted. We'll process it within 30 days."
+          "Your deletion request has been submitted. We'll process it within 30 days.",
         );
         setEmail("");
       } else {

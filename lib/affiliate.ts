@@ -43,7 +43,7 @@ function addAmazonAffiliateTag(url: string): string {
  * @returns The affiliate-tagged URL
  */
 export function getAffiliateUrl(
-  originalUrl: string | undefined
+  originalUrl: string | undefined,
 ): string | undefined {
   if (!originalUrl) {
     return undefined;

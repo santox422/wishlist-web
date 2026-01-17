@@ -62,12 +62,12 @@ export default function WishlistPreviewPage() {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const wishlistData = await (client as any).query(
           "publicQueries:getSharedWishlist",
-          { wishlistId: id }
+          { wishlistId: id },
         );
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const wishesData = await (client as any).query(
           "publicQueries:getSharedWishes",
-          { wishlistId: id }
+          { wishlistId: id },
         );
 
         if (!wishlistData) {
@@ -90,7 +90,7 @@ export default function WishlistPreviewPage() {
   // Calculate total value
   const totalValue = wishes.reduce(
     (sum, wish) => sum + wish.price * wish.quantity,
-    0
+    0,
   );
 
   // Format price
