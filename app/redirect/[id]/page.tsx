@@ -105,8 +105,6 @@ export default function WishlistPreviewPage() {
   // Retro card style
   const retroCard =
     "bg-white border-2 border-black rounded-3xl shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]";
-  const retroCardHover =
-    "hover:shadow-[7px_7px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all duration-200";
   const retroButton =
     "border-2 border-black rounded-full shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all duration-200 font-bold";
 
@@ -239,16 +237,16 @@ export default function WishlistPreviewPage() {
 
         {/* Wishes Grid */}
         {wishes.length > 0 && (
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-8">
             {wishes.map((wish) => (
               <div
                 key={wish._id}
-                className={`${retroCard} ${retroCardHover} overflow-hidden ${
-                  wish.isReserved ? "opacity-70" : ""
-                }`}
+                className={`${retroCard} overflow-hidden flex flex-col ${
+                  wish.isReserved ? "opacity-60" : ""
+                } hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all duration-200`}
               >
                 {/* Image */}
-                <div className="aspect-square relative bg-[#FFD1E6] border-b-2 border-black">
+                <div className="aspect-square relative bg-[#FFD1E6] border-b-2 border-black shrink-0">
                   {wish.image ? (
                     <Image
                       src={wish.image}
@@ -259,7 +257,7 @@ export default function WishlistPreviewPage() {
                   ) : (
                     <div className="absolute inset-0 flex items-center justify-center">
                       <svg
-                        className="w-12 h-12 text-[#999]"
+                        className="w-8 h-8 sm:w-10 sm:h-10 text-[#999]"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -276,51 +274,51 @@ export default function WishlistPreviewPage() {
 
                   {/* Reserved badge */}
                   {wish.isReserved && (
-                    <div className="absolute top-3 right-3 bg-green-500 text-white text-xs font-black px-3 py-1.5 rounded-full border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-                      ✓ Reserved
+                    <div className="absolute top-2 right-2 bg-green-500 text-white text-[10px] sm:text-xs font-bold px-2 py-1 rounded-full border border-black">
+                      Reserved
                     </div>
                   )}
 
                   {/* Must have badge */}
                   {wish.mustHave && !wish.isReserved && (
-                    <div className="absolute top-3 right-3 bg-[#ED5050] text-white text-xs font-black px-3 py-1.5 rounded-full border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-                      ⭐ Must Have
+                    <div className="absolute top-2 right-2 bg-[#ED5050] text-white text-[10px] sm:text-xs font-bold px-2 py-1 rounded-full border border-black">
+                      Top Pick
                     </div>
                   )}
 
                   {/* Quantity badge */}
                   {wish.quantity > 1 && (
-                    <div className="absolute bottom-3 left-3 bg-black text-white text-sm font-black px-3 py-1 rounded-full">
+                    <div className="absolute bottom-2 left-2 bg-black text-white text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-full">
                       ×{wish.quantity}
                     </div>
                   )}
                 </div>
 
                 {/* Details */}
-                <div className="p-4">
-                  <h3 className="font-black text-black text-lg mb-1 line-clamp-2">
+                <div className="p-2.5 sm:p-3 flex flex-col flex-grow">
+                  <h3 className="font-bold text-black text-sm sm:text-base mb-1 truncate">
                     {wish.name}
                   </h3>
 
-                  <p className="text-2xl font-black text-[#ED5050] mb-2">
+                  <p className="text-sm sm:text-base font-bold text-[#ED5050] mb-2">
                     {formatPrice(wish.price)}
                   </p>
 
-                  {wish.note && (
-                    <p className="text-gray-600 text-sm italic mb-3 line-clamp-2 font-medium">
-                      &ldquo;{wish.note}&rdquo;
-                    </p>
-                  )}
+                  {/* Spacer to push button to bottom */}
+                  <div className="flex-grow" />
 
-                  {/* Shop button */}
+                  {/* Link button - always at bottom */}
                   {wish.link && (
                     <a
                       href={getAffiliateUrl(wish.link)}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`${retroButton} block w-full bg-[#FFD1E6] text-black text-center py-2.5 px-4 text-sm`}
+                      className="block w-full bg-black text-white text-center py-2 px-3 text-xs sm:text-sm font-bold rounded-full border-2 border-black hover:bg-[#ED5050] transition-colors mt-auto"
                     >
-                      Shop at {getStoreName(wish.link)}
+                      <span className="sm:hidden">Open</span>
+                      <span className="hidden sm:inline">
+                        View at {getStoreName(wish.link)}
+                      </span>
                     </a>
                   )}
                 </div>
@@ -353,53 +351,34 @@ export default function WishlistPreviewPage() {
           </div>
         )}
 
-        {/* Continue to App CTA */}
-        <div
-          className={`${retroCard} bg-[#FFD1E6] border-black p-6 sm:p-8 text-center mb-8`}
-        >
-          <h2 className="text-2xl sm:text-3xl font-black text-black mb-3">
-            Open in Wishii App
-          </h2>
-          <p className="text-gray-700 mb-6 max-w-md mx-auto font-medium">
-            Download the app to reserve gifts, create your own wishlists, and
-            never miss a gifting moment!
-          </p>
-
-          <a
-            href={appScheme}
-            className="inline-block bg-white text-[#ED5050] text-lg py-4 px-10 rounded-full border-2 border-black shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] hover:shadow-[7px_7px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all duration-200 font-black mb-6"
-          >
-            Continue to App
-          </a>
-
-          {/* App store buttons */}
-          <div className="border-t-2 border-black border-dashed pt-6 mt-2">
-            <p className="text-gray-600 text-sm mb-4 font-bold">
-              Don&apos;t have the app yet?
-            </p>
-            <a
-              href="https://play.google.com/store/apps/details?id=xyz.wishii.app"
-              className="inline-block bg-white rounded-xl border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all duration-200 overflow-hidden px-2"
-            >
-              <Image
-                src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
-                alt="Get it on Google Play"
-                width={180}
-                height={54}
-                className="-my-1 mx-auto"
-              />
-            </a>
-          </div>
-        </div>
-
         {/* Footer */}
-        <div className="text-center">
+        <div className="text-center pb-24">
           <Link
             href="/"
             className="text-[#ED5050] hover:text-black font-bold transition-colors inline-flex items-center gap-2"
           >
             ← Learn more about Wishii
           </Link>
+        </div>
+      </div>
+
+      {/* Floating bottom bar */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t-2 border-black p-3 sm:p-4">
+        <div className="max-w-4xl mx-auto flex items-center justify-between gap-3">
+          <div className="flex-1 min-w-0">
+            <p className="text-black font-bold text-sm sm:text-base truncate">
+              Open in Wishii
+            </p>
+            <p className="text-gray-500 text-xs sm:text-sm hidden sm:block">
+              Reserve gifts & create your own wishlists
+            </p>
+          </div>
+          <a
+            href={appScheme}
+            className="flex-shrink-0 bg-[#ED5050] text-white px-5 sm:px-8 py-2.5 sm:py-3 rounded-full border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all duration-200 font-bold text-sm sm:text-base"
+          >
+            Open App
+          </a>
         </div>
       </div>
     </div>
