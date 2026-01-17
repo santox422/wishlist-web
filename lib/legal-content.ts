@@ -5,8 +5,8 @@ export const legalConfig = {
   appName: "Wishii",
   ownerName: "Sebastian Seidel",
   contactEmail: "wishii.help@gmail.com",
-  lastUpdated: "December 2024",
-  lastUpdatedDE: "Dezember 2024",
+  lastUpdated: "January 2026",
+  lastUpdatedDE: "Januar 2026",
   minimumAge: 16,
   websiteUrl: "https://wishii.xyz",
 };
@@ -229,11 +229,18 @@ We use the following service providers:
 • Convex (USA) - Backend database and real-time synchronization
 • Firebase/Google Cloud (USA) - Push notifications (FCM)
 • OneSignal (USA) - Push notifications
-• Sentry (USA) - Error tracking and crash reports
+• Sentry (USA) - Error tracking and crash reports (only with explicit consent)
 • PostHog (USA) - Anonymized usage analytics
 • RevenueCat (USA) - In-app purchases and subscription management
 
 These service providers are contractually obligated to comply with the GDPR.
+
+Important about Sentry (Error Tracking):
+• Sentry is NOT activated automatically
+• You will be asked for your consent when you first open the app
+• Sentry only collects technical error information, no personally identifiable information (PII)
+• You can revoke your consent at any time in the settings
+• Without your consent, no data will be transmitted to Sentry
 
 6. Data Sharing with Other Users
 
@@ -271,10 +278,11 @@ You can disable push notifications at any time in the App settings.
 
 10. Contact Access
 
-The optional contact search is solely used to find friends who also use the App. Contact data is:
+The optional contact search is solely used to find friends who also use the App. Permission is ONLY requested when you actively tap the "Contacts" tab in the friend search. Contact data is:
 • Only matched locally on your device
 • Not stored on our servers
 • Not shared with third parties
+• Permission is never requested automatically at app startup
 
 11. Data Security
 
@@ -349,11 +357,18 @@ Wir nutzen folgende Dienstleister:
 • Convex (USA) - Backend-Datenbank und Echtzeit-Synchronisation
 • Firebase/Google Cloud (USA) - Push-Benachrichtigungen (FCM)
 • OneSignal (USA) - Push-Benachrichtigungen
-• Sentry (USA) - Fehlertracking und Crash-Reports
+• Sentry (USA) - Fehlertracking und Crash-Reports (nur mit expliziter Einwilligung)
 • PostHog (USA) - Anonymisierte Nutzungsanalyse
 • RevenueCat (USA) - In-App-Käufe und Abonnement-Verwaltung
 
 Diese Dienstleister sind vertraglich zur Einhaltung der DSGVO verpflichtet.
+
+Wichtig zu Sentry (Fehlertracking):
+• Sentry wird NICHT automatisch aktiviert
+• Sie werden beim ersten App-Start nach Ihrer Einwilligung gefragt
+• Sentry erfasst nur technische Fehlerinformationen, keine personenbezogenen Daten (PII)
+• Sie können Ihre Einwilligung jederzeit in den Einstellungen widerrufen
+• Ohne Ihre Einwilligung werden keine Daten an Sentry übertragen
 
 6. Datenweitergabe an andere Nutzer
 
@@ -391,10 +406,11 @@ Sie können Push-Benachrichtigungen jederzeit in den App-Einstellungen deaktivie
 
 10. Kontaktzugriff
 
-Die optionale Kontaktsuche dient ausschließlich dazu, Freunde zu finden, die die App ebenfalls nutzen. Kontaktdaten werden:
+Die optionale Kontaktsuche dient ausschließlich dazu, Freunde zu finden, die die App ebenfalls nutzen. Die Berechtigung wird NUR angefragt, wenn Sie aktiv auf den "Kontakte"-Tab in der Freundessuche tippen. Kontaktdaten werden:
 • Nur lokal auf Ihrem Gerät abgeglichen
 • Nicht auf unseren Servern gespeichert
 • Nicht an Dritte weitergegeben
+• Die Berechtigung wird nie automatisch beim App-Start angefragt
 
 11. Datensicherheit
 

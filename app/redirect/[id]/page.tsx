@@ -59,7 +59,6 @@ export default function WishlistPreviewPage() {
 
         const client = new ConvexHttpClient(convexUrl);
 
-        // Use function references directly instead of importing generated API
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const wishlistData = await (client as any).query(
           "publicQueries:getSharedWishlist",
@@ -103,13 +102,21 @@ export default function WishlistPreviewPage() {
     }).format(price);
   };
 
+  // Retro card style
+  const retroCard =
+    "bg-white border-2 border-black rounded-3xl shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]";
+  const retroCardHover =
+    "hover:shadow-[7px_7px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all duration-200";
+  const retroButton =
+    "border-2 border-black rounded-full shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all duration-200 font-bold";
+
   // Loading state
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="text-6xl mb-4 animate-bounce">🎁</div>
-          <p className="text-amber-800 font-medium">Loading wishlist...</p>
+      <div className="min-h-screen bg-[#FFF5F8] flex items-center justify-center">
+        <div className={`${retroCard} p-8 text-center`}>
+          <div className="w-12 h-12 border-4 border-black border-t-[#ED5050] rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-black font-bold text-lg">Loading wishlist...</p>
         </div>
       </div>
     );
@@ -118,18 +125,32 @@ export default function WishlistPreviewPage() {
   // Error state
   if (error || !wishlist) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 flex items-center justify-center p-4">
-        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-8 max-w-md w-full text-center border border-amber-200">
-          <div className="text-6xl mb-6">😔</div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">
+      <div className="min-h-screen bg-[#FFF5F8] flex items-center justify-center p-4">
+        <div className={`${retroCard} p-8 max-w-md w-full text-center`}>
+          <div className="w-16 h-16 bg-[#FFD1E6] rounded-full flex items-center justify-center mx-auto mb-6 border-2 border-black">
+            <svg
+              className="w-8 h-8 text-black"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+              />
+            </svg>
+          </div>
+          <h1 className="text-2xl font-black text-black mb-4">
             Wishlist Not Available
           </h1>
-          <p className="text-gray-600 mb-6">
+          <p className="text-gray-700 mb-6 font-medium">
             {error || "This wishlist is private or doesn't exist."}
           </p>
           <Link
             href="/"
-            className="inline-block bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-3 px-6 rounded-xl font-semibold hover:shadow-lg transition-all"
+            className={`${retroButton} inline-block bg-[#ED5050] text-white py-3 px-8`}
           >
             Go to Wishii
           </Link>
@@ -139,89 +160,95 @@ export default function WishlistPreviewPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50">
-      {/* Paper texture overlay */}
+    <div className="min-h-screen bg-[#FFF5F8]">
+      {/* Dotted pattern background */}
       <div
-        className="fixed inset-0 opacity-30 pointer-events-none"
+        className="fixed inset-0 pointer-events-none opacity-20"
         style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+          backgroundImage: `radial-gradient(circle, #000 1px, transparent 1px)`,
+          backgroundSize: "24px 24px",
         }}
       />
 
       {/* Content */}
-      <div className="relative z-10 max-w-4xl mx-auto px-4 py-8 sm:py-12">
+      <div className="relative z-10 max-w-4xl mx-auto px-3 sm:px-4 py-6 sm:py-12">
         {/* Header Card */}
-        <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl p-6 sm:p-8 mb-8 border border-amber-200 relative overflow-hidden">
-          {/* Decorative ribbon */}
-          <div className="absolute -top-2 -right-2 w-24 h-24">
-            <div className="absolute transform rotate-45 bg-gradient-to-r from-purple-500 to-indigo-500 text-white text-xs font-bold py-1 right-[-35px] top-[32px] w-[170px] text-center shadow-md">
-              ✨ Wishlist
-            </div>
+        <div
+          className={`${retroCard} p-4 sm:p-8 mb-6 sm:mb-8 relative overflow-visible`}
+        >
+          {/* Corner decoration */}
+          <div className="absolute -top-3 -right-3 bg-[#ED5050] text-white px-4 py-2 rounded-full border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] font-bold text-sm rotate-6">
+            Wishlist
           </div>
 
           {/* Owner info */}
           <div className="flex items-center gap-4 mb-6">
-            {wishlist.owner?.picture && (
-              <Image
-                src={wishlist.owner.picture}
-                alt={wishlist.owner.name || "User"}
-                width={56}
-                height={56}
-                className="rounded-full border-2 border-amber-200"
-              />
+            {wishlist.owner?.picture ? (
+              <div className="w-14 h-14 rounded-full border-2 border-black overflow-hidden shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
+                <Image
+                  src={wishlist.owner.picture}
+                  alt={wishlist.owner.name || "User"}
+                  width={56}
+                  height={56}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            ) : (
+              <div className="w-14 h-14 rounded-full border-2 border-black bg-[#FFD1E6] flex items-center justify-center shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] text-2xl">
+                👤
+              </div>
             )}
             <div>
-              <p className="text-amber-600 text-sm font-medium">
+              <p className="text-[#ED5050] text-sm font-bold uppercase tracking-wide">
                 Wishlist from
               </p>
-              <p className="text-xl font-bold text-gray-900">
+              <p className="text-xl font-black text-black">
                 {wishlist.owner?.name || "Anonymous"}
               </p>
             </div>
           </div>
 
           {/* Wishlist name */}
-          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3 flex items-center gap-3">
-            <span className="text-4xl">🎁</span>
+          <h1 className="text-2xl sm:text-4xl font-black text-black mb-3">
             {wishlist.name}
           </h1>
 
           {/* Wishlist note */}
           {wishlist.note && (
-            <p className="text-gray-600 text-lg mb-4 italic">
-              &ldquo;{wishlist.note}&rdquo;
+            <p className="text-gray-700 text-lg mb-4 italic font-medium border-l-4 border-[#FFD1E6] pl-4">
+              {wishlist.note}
             </p>
           )}
 
           {/* Stats */}
-          <div className="flex flex-wrap gap-4 mt-6 pt-6 border-t border-amber-200">
-            <div className="bg-amber-50 rounded-xl px-4 py-2">
-              <span className="text-amber-600 text-sm">Total Value</span>
-              <p className="text-2xl font-bold text-gray-900">
+          <div className="flex flex-wrap gap-4 mt-6 pt-6 border-t-2 border-black border-dashed">
+            <div className="bg-[#FFD1E6] rounded-2xl px-5 py-3 border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
+              <span className="text-black text-sm font-bold block">
+                Total Value
+              </span>
+              <p className="text-2xl font-black text-black">
                 {formatPrice(totalValue)}
               </p>
             </div>
-            <div className="bg-amber-50 rounded-xl px-4 py-2">
-              <span className="text-amber-600 text-sm">Items</span>
-              <p className="text-2xl font-bold text-gray-900">
-                {wishes.length}
-              </p>
+            <div className="bg-[#FFD1E6] rounded-2xl px-5 py-3 border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
+              <span className="text-black text-sm font-bold block">Items</span>
+              <p className="text-2xl font-black text-black">{wishes.length}</p>
             </div>
           </div>
         </div>
 
         {/* Wishes Grid */}
         {wishes.length > 0 && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
             {wishes.map((wish) => (
               <div
                 key={wish._id}
-                className={`bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg overflow-hidden border border-amber-200 transition-all hover:shadow-xl hover:-translate-y-1 ${
-                  wish.isReserved ? "opacity-60" : ""
+                className={`${retroCard} ${retroCardHover} overflow-hidden ${
+                  wish.isReserved ? "opacity-70" : ""
                 }`}
               >
                 {/* Image */}
-                <div className="aspect-square relative bg-gradient-to-br from-amber-100 to-orange-100">
+                <div className="aspect-square relative bg-[#FFD1E6] border-b-2 border-black">
                   {wish.image ? (
                     <Image
                       src={wish.image}
@@ -230,28 +257,40 @@ export default function WishlistPreviewPage() {
                       className="object-cover"
                     />
                   ) : (
-                    <div className="absolute inset-0 flex items-center justify-center text-6xl opacity-50">
-                      🎁
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <svg
+                        className="w-12 h-12 text-[#999]"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={1.5}
+                          d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                        />
+                      </svg>
                     </div>
                   )}
 
                   {/* Reserved badge */}
                   {wish.isReserved && (
-                    <div className="absolute top-2 right-2 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
+                    <div className="absolute top-3 right-3 bg-green-500 text-white text-xs font-black px-3 py-1.5 rounded-full border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                       ✓ Reserved
                     </div>
                   )}
 
                   {/* Must have badge */}
                   {wish.mustHave && !wish.isReserved && (
-                    <div className="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
+                    <div className="absolute top-3 right-3 bg-[#ED5050] text-white text-xs font-black px-3 py-1.5 rounded-full border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                       ⭐ Must Have
                     </div>
                   )}
 
                   {/* Quantity badge */}
                   {wish.quantity > 1 && (
-                    <div className="absolute bottom-2 left-2 bg-gray-900/80 text-white text-xs font-bold px-2 py-1 rounded-full">
+                    <div className="absolute bottom-3 left-3 bg-black text-white text-sm font-black px-3 py-1 rounded-full">
                       ×{wish.quantity}
                     </div>
                   )}
@@ -259,16 +298,16 @@ export default function WishlistPreviewPage() {
 
                 {/* Details */}
                 <div className="p-4">
-                  <h3 className="font-bold text-gray-900 text-lg mb-1 line-clamp-2">
+                  <h3 className="font-black text-black text-lg mb-1 line-clamp-2">
                     {wish.name}
                   </h3>
 
-                  <p className="text-2xl font-bold text-purple-600 mb-2">
+                  <p className="text-2xl font-black text-[#ED5050] mb-2">
                     {formatPrice(wish.price)}
                   </p>
 
                   {wish.note && (
-                    <p className="text-gray-500 text-sm italic mb-3 line-clamp-2">
+                    <p className="text-gray-600 text-sm italic mb-3 line-clamp-2 font-medium">
                       &ldquo;{wish.note}&rdquo;
                     </p>
                   )}
@@ -279,9 +318,9 @@ export default function WishlistPreviewPage() {
                       href={getAffiliateUrl(wish.link)}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="block w-full bg-gradient-to-r from-amber-500 to-orange-500 text-white text-center py-2 px-4 rounded-xl font-semibold hover:shadow-lg transition-all text-sm"
+                      className={`${retroButton} block w-full bg-[#FFD1E6] text-black text-center py-2.5 px-4 text-sm`}
                     >
-                      🛒 Shop at {getStoreName(wish.link)}
+                      Shop at {getStoreName(wish.link)}
                     </a>
                   )}
                 </div>
@@ -292,62 +331,64 @@ export default function WishlistPreviewPage() {
 
         {/* Empty state */}
         {wishes.length === 0 && (
-          <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-8 text-center mb-8 border border-amber-200">
-            <div className="text-6xl mb-4">📝</div>
-            <p className="text-gray-600">
+          <div className={`${retroCard} p-8 text-center mb-8`}>
+            <div className="w-16 h-16 bg-[#FFD1E6] rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-black">
+              <svg
+                className="w-8 h-8 text-black"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                />
+              </svg>
+            </div>
+            <p className="text-gray-700 font-bold">
               This wishlist is empty. Check back later!
             </p>
           </div>
         )}
 
         {/* Continue to App CTA */}
-        <div className="bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-600 rounded-3xl shadow-2xl p-6 sm:p-8 text-center text-white mb-8">
-          <h2 className="text-2xl sm:text-3xl font-bold mb-3">
-            🎉 Open in Wishii App
+        <div
+          className={`${retroCard} bg-[#FFD1E6] border-black p-6 sm:p-8 text-center mb-8`}
+        >
+          <h2 className="text-2xl sm:text-3xl font-black text-black mb-3">
+            Open in Wishii App
           </h2>
-          <p className="text-purple-100 mb-6 max-w-md mx-auto">
+          <p className="text-gray-700 mb-6 max-w-md mx-auto font-medium">
             Download the app to reserve gifts, create your own wishlists, and
             never miss a gifting moment!
           </p>
 
           <a
             href={appScheme}
-            className="inline-block bg-white text-purple-600 text-lg py-4 px-8 rounded-2xl font-bold hover:shadow-xl hover:-translate-y-1 transition-all mb-6"
+            className="inline-block bg-white text-[#ED5050] text-lg py-4 px-10 rounded-full border-2 border-black shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] hover:shadow-[7px_7px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all duration-200 font-black mb-6"
           >
-            🎁 Continue to App
+            Continue to App
           </a>
 
           {/* App store buttons */}
-          <div className="border-t border-purple-400 pt-6 mt-2">
-            <p className="text-purple-200 text-sm mb-4">
+          <div className="border-t-2 border-black border-dashed pt-6 mt-2">
+            <p className="text-gray-600 text-sm mb-4 font-bold">
               Don&apos;t have the app yet?
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <a
-                href="https://apps.apple.com/app/wishii-wishlist-gift-app/id6745197846"
-                className="transition-transform hover:scale-105"
-              >
-                <Image
-                  src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us"
-                  alt="Download on App Store"
-                  width={135}
-                  height={40}
-                  className="mx-auto"
-                />
-              </a>
-              <a
-                href="https://play.google.com/store/apps/details?id=xyz.wishii.app"
-                className="transition-transform hover:scale-105"
-              >
-                <Image
-                  src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
-                  alt="Get it on Google Play"
-                  width={155}
-                  height={45}
-                  className="-my-1 mx-auto"
-                />
-              </a>
-            </div>
+            <a
+              href="https://play.google.com/store/apps/details?id=xyz.wishii.app"
+              className="inline-block bg-white rounded-xl border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all duration-200 overflow-hidden px-2"
+            >
+              <Image
+                src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
+                alt="Get it on Google Play"
+                width={180}
+                height={54}
+                className="-my-1 mx-auto"
+              />
+            </a>
           </div>
         </div>
 
@@ -355,7 +396,7 @@ export default function WishlistPreviewPage() {
         <div className="text-center">
           <Link
             href="/"
-            className="text-amber-700 hover:text-amber-900 font-medium transition-colors"
+            className="text-[#ED5050] hover:text-black font-bold transition-colors inline-flex items-center gap-2"
           >
             ← Learn more about Wishii
           </Link>

@@ -60,6 +60,63 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "play.google.com",
       },
+      // Profile pictures from various auth providers
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+      },
+      {
+        protocol: "https",
+        hostname: "*.googleusercontent.com",
+      },
+      {
+        protocol: "https",
+        hostname: "platform-lookaside.fbsbx.com",
+      },
+      {
+        protocol: "https",
+        hostname: "avatars.githubusercontent.com",
+      },
+      // Convex storage
+      {
+        protocol: "https",
+        hostname: "*.convex.cloud",
+      },
+      // Common image sources
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+      },
+      {
+        protocol: "https",
+        hostname: "*.amazonaws.com",
+      },
+      {
+        protocol: "https",
+        hostname: "*.cloudinary.com",
+      },
+      // E-commerce sites (for product images)
+      {
+        protocol: "https",
+        hostname: "*.amazon.com",
+      },
+      {
+        protocol: "https",
+        hostname: "*.ebay.com",
+      },
+      {
+        protocol: "https",
+        hostname: "*.media-amazon.com",
+      },
+      {
+        protocol: "https",
+        hostname: "m.media-amazon.com",
+      },
+      // Allow any HTTPS image (fallback)
+      {
+        protocol: "https",
+        hostname: "**",
+      },
     ],
   },
   // Add security headers to all routes

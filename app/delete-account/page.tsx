@@ -9,6 +9,12 @@ export default function DeleteAccountPage() {
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
 
+  // Retro style constants
+  const retroCard =
+    "bg-white border-2 border-black rounded-3xl shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]";
+  const retroButton =
+    "border-2 border-black rounded-full shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all duration-200 font-bold";
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -33,7 +39,7 @@ export default function DeleteAccountPage() {
       if (response.ok) {
         setStatus("success");
         setMessage(
-          "Your deletion request has been submitted. We'll process it within 30 days.",
+          "Your deletion request has been submitted. We'll process it within 30 days."
         );
         setEmail("");
       } else {
@@ -49,43 +55,64 @@ export default function DeleteAccountPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[var(--color-cream)]">
+    <div className="min-h-screen bg-[#FFF5F8]">
+      {/* Dotted pattern background */}
+      <div
+        className="fixed inset-0 pointer-events-none opacity-20"
+        style={{
+          backgroundImage: `radial-gradient(circle, #000 1px, transparent 1px)`,
+          backgroundSize: "24px 24px",
+        }}
+      />
+
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-[var(--color-cream)]/80 backdrop-blur-md border-b border-[var(--color-light-gray)]">
-        <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#FFF5F8]/90 backdrop-blur-md border-b-2 border-black">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <span className="text-2xl">🎁</span>
-            <span className="font-semibold text-[var(--color-charcoal)]">
-              Wishlist
-            </span>
+            <div className="w-8 h-8 bg-[#ED5050] rounded-lg border-2 border-black flex items-center justify-center">
+              <span className="text-white font-black text-sm">W</span>
+            </div>
+            <span className="font-black text-black text-lg">Wishii</span>
           </Link>
         </div>
       </nav>
 
       {/* Content */}
-      <main className="pt-32 pb-20 px-6">
+      <main className="relative z-10 pt-28 sm:pt-32 pb-16 sm:pb-20 px-4 sm:px-6">
         <div className="max-w-lg mx-auto">
           {/* Header */}
           <div className="text-center mb-10">
-            <div className="w-16 h-16 bg-[var(--color-soft-amber)] rounded-2xl flex items-center justify-center mx-auto mb-6">
-              <span className="text-3xl">🗑️</span>
+            <div className="w-16 h-16 bg-[#FFD1E6] rounded-2xl border-2 border-black flex items-center justify-center mx-auto mb-6 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
+              <svg
+                className="w-8 h-8 text-black"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                />
+              </svg>
             </div>
-            <h1 className="text-3xl sm:text-4xl font-bold text-[var(--color-charcoal)] mb-4">
+            <h1 className="text-3xl sm:text-4xl font-black text-black mb-4">
               Delete Account
             </h1>
-            <p className="text-[var(--color-warm-gray)] leading-relaxed">
+            <p className="text-gray-700 leading-relaxed font-medium">
               Submit a request to delete your account and all associated data.
               This action is permanent and cannot be undone.
             </p>
           </div>
 
           {/* Form */}
-          <div className="bg-white rounded-2xl p-8 shadow-sm border border-[var(--color-light-gray)]">
+          <div className={`${retroCard} p-6 sm:p-8`}>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <label
                   htmlFor="email"
-                  className="block text-sm font-medium text-[var(--color-charcoal)] mb-2"
+                  className="block text-sm font-black text-black mb-2"
                 >
                   Email Address
                 </label>
@@ -95,7 +122,7 @@ export default function DeleteAccountPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your account email"
-                  className="w-full px-4 py-3 rounded-xl border border-[var(--color-light-gray)] bg-[var(--color-cream)] text-[var(--color-charcoal)] placeholder:text-[var(--color-warm-gray)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:border-transparent transition-all"
+                  className="w-full px-4 py-3 rounded-2xl border-2 border-black bg-white text-black placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#ED5050] focus:border-[#ED5050] transition-all font-medium"
                   disabled={isSubmitting}
                 />
               </div>
@@ -103,10 +130,10 @@ export default function DeleteAccountPage() {
               {/* Status Message */}
               {status !== "idle" && (
                 <div
-                  className={`p-4 rounded-xl text-sm ${
+                  className={`p-4 rounded-xl text-sm font-bold border-2 border-black ${
                     status === "success"
-                      ? "bg-green-50 text-green-800 border border-green-200"
-                      : "bg-red-50 text-red-800 border border-red-200"
+                      ? "bg-green-100 text-green-800"
+                      : "bg-red-100 text-red-800"
                   }`}
                 >
                   {message}
@@ -116,28 +143,26 @@ export default function DeleteAccountPage() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-4 bg-[var(--color-charcoal)] text-white font-semibold rounded-xl hover:bg-[var(--color-charcoal)]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className={`${retroButton} w-full py-4 bg-[#ED5050] text-white disabled:opacity-50 disabled:cursor-not-allowed`}
               >
                 {isSubmitting ? "Submitting..." : "Request Account Deletion"}
               </button>
             </form>
 
             {/* Info */}
-            <div className="mt-8 pt-6 border-t border-[var(--color-light-gray)]">
-              <h3 className="font-semibold text-[var(--color-charcoal)] mb-3">
-                What happens next?
-              </h3>
-              <ul className="space-y-2 text-sm text-[var(--color-warm-gray)]">
+            <div className="mt-8 pt-6 border-t-2 border-black border-dashed">
+              <h3 className="font-black text-black mb-3">What happens next?</h3>
+              <ul className="space-y-2 text-sm text-gray-700 font-medium">
                 <li className="flex items-start gap-2">
-                  <span className="text-[var(--color-accent)]">•</span>
+                  <span className="text-[#ED5050] font-bold">•</span>
                   We&apos;ll verify your request within 24 hours
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-[var(--color-accent)]">•</span>
+                  <span className="text-[#ED5050] font-bold">•</span>
                   Your data will be permanently deleted within 30 days
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-[var(--color-accent)]">•</span>
+                  <span className="text-[#ED5050] font-bold">•</span>
                   You&apos;ll receive a confirmation email once complete
                 </li>
               </ul>
@@ -148,7 +173,7 @@ export default function DeleteAccountPage() {
           <div className="mt-8 text-center">
             <Link
               href="/"
-              className="text-sm text-[var(--color-warm-gray)] hover:text-[var(--color-charcoal)] transition-colors"
+              className="text-[#ED5050] hover:text-black font-bold transition-colors"
             >
               ← Back to home
             </Link>
@@ -157,13 +182,13 @@ export default function DeleteAccountPage() {
       </main>
 
       {/* Footer */}
-      <footer className="py-8 px-6 border-t border-[var(--color-light-gray)]">
+      <footer className="relative z-10 py-8 px-4 sm:px-6 border-t-2 border-black">
         <div className="max-w-4xl mx-auto text-center">
-          <p className="text-sm text-[var(--color-warm-gray)]">
+          <p className="text-sm text-gray-700 font-bold">
             Need help?{" "}
             <a
               href="mailto:wishii.help@gmail.com"
-              className="text-[var(--color-charcoal)] hover:text-[var(--color-accent)] transition-colors"
+              className="text-[#ED5050] hover:text-black transition-colors"
             >
               Contact Support
             </a>
