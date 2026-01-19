@@ -174,15 +174,10 @@ export default function WishlistPreviewPage() {
         <div
           className={`${retroCard} p-4 sm:p-8 mb-6 sm:mb-8 relative overflow-visible`}
         >
-          {/* Corner decoration */}
-          <div className="absolute -top-3 -right-3 bg-[#ED5050] text-white px-4 py-2 rounded-full border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] font-bold text-sm rotate-6">
-            Wishlist
-          </div>
-
           {/* Owner info */}
           <div className="flex items-center gap-4 mb-6">
             {wishlist.owner?.picture ? (
-              <div className="w-14 h-14 rounded-full border-2 border-black overflow-hidden shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
+              <div className="w-14 h-14 rounded-full border-2 border-black overflow-hidden">
                 <Image
                   src={wishlist.owner.picture}
                   alt={wishlist.owner.name || "User"}
@@ -252,7 +247,7 @@ export default function WishlistPreviewPage() {
                       src={wish.image}
                       alt={wish.name}
                       fill
-                      className="object-cover"
+                      className="object-contain"
                     />
                   ) : (
                     <div className="absolute inset-0 flex items-center justify-center">
