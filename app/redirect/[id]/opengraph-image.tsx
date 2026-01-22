@@ -11,13 +11,18 @@ export const size = {
 
 export const contentType = "image/png";
 
-// Convex client for fetching data
-function getConvexClient() {
-  const convexUrl = process.env.NEXT_PUBLIC_CONVEX_URL;
-  if (!convexUrl) {
-    throw new Error("NEXT_PUBLIC_CONVEX_URL is not set");
-  }
-  return new ConvexHttpClient(convexUrl);
+// Get all configured Convex URLs (for trying both environments)
+function getConfiguredConvexUrls(): string[] {
+  const urls: string[] = [];
+
+  const prodUrl = process.env.NEXT_PUBLIC_CONVEX_URL_PROD;
+  const devUrl = process.env.NEXT_PUBLIC_CONVEX_URL_DEV;
+
+  // Add prod first (more likely to be the production wishlist being shared)
+  if (prodUrl) urls.push(prodUrl);
+  if (devUrl) urls.push(devUrl);
+
+  return urls;
 }
 
 interface WishlistData {
@@ -46,22 +51,33 @@ export default async function Image({
   let wishlist: WishlistData | null = null;
   let wishes: WishData[] = [];
 
-  try {
-    const client = getConvexClient();
+  // Try all configured Convex environments
+  const urls = getConfiguredConvexUrls();
+  for (const url of urls) {
+    try {
+      const client = new ConvexHttpClient(url);
 
-    // Fetch wishlist data
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    wishlist = await client.query("publicQueries:getSharedWishlist" as any, {
-      wishlistId: id,
-    });
+      // Fetch wishlist data
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const wishlistData = await client.query(
+        "publicQueries:getSharedWishlist" as any,
+        {
+          wishlistId: id,
+        },
+      );
 
-    // Fetch wishes
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    wishes = await client.query("publicQueries:getSharedWishes" as any, {
-      wishlistId: id,
-    });
-  } catch (error) {
-    console.error("Error fetching wishlist for OG image:", error);
+      if (wishlistData) {
+        wishlist = wishlistData;
+        // Fetch wishes
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        wishes = await client.query("publicQueries:getSharedWishes" as any, {
+          wishlistId: id,
+        });
+        break; // Found it, stop searching
+      }
+    } catch {
+      // Continue to next environment
+    }
   }
 
   // Take first 4 wishes for the preview

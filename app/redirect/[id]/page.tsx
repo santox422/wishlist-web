@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { ConvexHttpClient } from "convex/browser";
+import { fetchWishlistFromAnyEnv } from "../../../lib/convex";
 import { getAffiliateUrl, getStoreName } from "../../../lib/affiliate";
 
 // Types for wishlist data
@@ -50,31 +50,14 @@ export default function WishlistPreviewPage() {
   useEffect(() => {
     async function loadWishlistData() {
       try {
-        const convexUrl = process.env.NEXT_PUBLIC_CONVEX_URL;
-        if (!convexUrl) {
-          setError("Configuration error");
-          setLoading(false);
-          return;
-        }
+        // Try to fetch from both dev and prod environments
+        const result = await fetchWishlistFromAnyEnv(id);
 
-        const client = new ConvexHttpClient(convexUrl);
-
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const wishlistData = await (client as any).query(
-          "publicQueries:getSharedWishlist",
-          { wishlistId: id },
-        );
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const wishesData = await (client as any).query(
-          "publicQueries:getSharedWishes",
-          { wishlistId: id },
-        );
-
-        if (!wishlistData) {
+        if (!result) {
           setError("Wishlist not found or is private");
         } else {
-          setWishlist(wishlistData as SharedWishlist);
-          setWishes((wishesData as SharedWish[]) || []);
+          setWishlist(result.wishlist as SharedWishlist);
+          setWishes((result.wishes as SharedWish[]) || []);
         }
       } catch (err) {
         console.error("Failed to load wishlist:", err);
