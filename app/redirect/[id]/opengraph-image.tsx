@@ -58,8 +58,8 @@ export default async function Image({
       const client = new ConvexHttpClient(url);
 
       // Fetch wishlist data
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const wishlistData = await client.query(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         "publicQueries:getSharedWishlist" as any,
         {
           wishlistId: id,

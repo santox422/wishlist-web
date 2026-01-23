@@ -59,7 +59,7 @@ export default function WishlistPreviewPage() {
           setWishlist(result.wishlist as SharedWishlist);
           setWishes((result.wishes as SharedWish[]) || []);
         }
-      } catch (err) {
+      } catch (err: unknown) {
         console.error("Failed to load wishlist:", err);
         setError("Failed to load wishlist");
       } finally {

@@ -194,7 +194,6 @@ export default async function Image({
               }}
             >
               {wish.image ? (
-                // eslint-disable-next-line @next/next/no-img-element
                 <img
                   src={wish.image}
                   alt={wish.name}
