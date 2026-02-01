@@ -6,11 +6,16 @@ import Link from "next/link";
 import Image from "next/image";
 import { fetchWishlistFromAnyEnv } from "../../../lib/convex";
 import { getAffiliateUrl, getStoreName } from "../../../lib/affiliate";
+import {
+  getExchangeRates,
+  formatPriceForOwnerSync,
+} from "../../../lib/currency";
 
 // Types for wishlist data
 interface WishlistOwner {
   name: string | null;
   picture: string | null;
+  country: string | null;
 }
 
 interface SharedWishlist {
@@ -44,6 +49,9 @@ export default function WishlistPreviewPage() {
   const [wishes, setWishes] = useState<SharedWish[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [exchangeRates, setExchangeRates] = useState<Record<string, number>>(
+    {},
+  );
 
   const appScheme = `wishii://wishlist/${id}`;
 
@@ -68,6 +76,9 @@ export default function WishlistPreviewPage() {
     }
 
     loadWishlistData();
+
+    // Load exchange rates
+    getExchangeRates().then(setExchangeRates).catch(console.error);
   }, [id]);
 
   // Calculate total value
@@ -76,13 +87,13 @@ export default function WishlistPreviewPage() {
     0,
   );
 
-  // Format price
+  // Format price using owner's currency preference
   const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-      minimumFractionDigits: 2,
-    }).format(price);
+    return formatPriceForOwnerSync(
+      price,
+      wishlist?.owner?.country,
+      exchangeRates,
+    );
   };
 
   // Retro card style

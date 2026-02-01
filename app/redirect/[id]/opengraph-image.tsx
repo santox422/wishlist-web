@@ -1,5 +1,9 @@
 import { ImageResponse } from "next/og";
 import { ConvexHttpClient } from "convex/browser";
+import {
+  getExchangeRates,
+  formatPriceForOwnerSync,
+} from "../../../lib/currency";
 
 export const runtime = "edge";
 
@@ -31,6 +35,7 @@ interface WishlistData {
   owner?: {
     name: string;
     image?: string;
+    country?: string;
   };
 }
 
@@ -50,6 +55,7 @@ export default async function Image({
 
   let wishlist: WishlistData | null = null;
   let wishes: WishData[] = [];
+  let exchangeRates: Record<string, number> = {};
 
   // Try all configured Convex environments
   const urls = getConfiguredConvexUrls();
@@ -73,6 +79,9 @@ export default async function Image({
         wishes = await client.query("publicQueries:getSharedWishes" as any, {
           wishlistId: id,
         });
+
+        // Fetch exchange rates for currency conversion
+        exchangeRates = await getExchangeRates();
         break; // Found it, stop searching
       }
     } catch {
@@ -237,7 +246,11 @@ export default async function Image({
                     color: "#ED5050",
                   }}
                 >
-                  ${wish.price.toFixed(2)}
+                  {formatPriceForOwnerSync(
+                    wish.price ?? 0,
+                    wishlist?.owner?.country,
+                    exchangeRates,
+                  )}
                 </span>
               )}
             </div>
